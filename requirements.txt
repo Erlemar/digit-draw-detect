@@ -9,7 +9,5 @@ rich==12.6.0
 streamlit==1.16.0
 streamlit_drawable_canvas==0.9.2
 tomli==2.0.1
-torch==1.12.1
-torchvision
 # need to define some pytorch
 https://download.pytorch.org/whl/cpu/torch-1.13.1%2Bcpu-cp310-cp310-linux_x86_64.whl
