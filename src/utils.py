@@ -3,9 +3,8 @@ from typing import List, Dict
 import matplotlib
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
-import numpy as np
-import tomli as tomllib
 import numpy.typing as npt
+import tomli as tomllib
 
 
 def plot_img_with_rects(
