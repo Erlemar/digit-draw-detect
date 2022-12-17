@@ -2,7 +2,6 @@ import logging
 
 import numpy as np
 import streamlit as st
-import tomli as tomllib
 from PIL import Image
 from streamlit_drawable_canvas import st_canvas
 

@@ -60,8 +60,6 @@ class Net(nn.Module):
         super().__init__()
         self.num_classes = 12
         self.in_channels = 3
-        # self.config = cfg.model_files.params.config
-        # self.config = [i if i[0] != '(' else literal_eval(i) for i in self.config]
         self.config = [
             (32, 3, 1),
             (64, 3, 2),
@@ -88,7 +86,6 @@ class Net(nn.Module):
             (256, 3, 1),
             'S',
         ]
-        # print('self.config', self.config)
         self.layers = self._create_conv_layers()
 
     def forward(self, x):
@@ -98,7 +95,6 @@ class Net(nn.Module):
             if isinstance(layer, ScalePrediction):
                 outputs.append(layer(x))
                 continue
-            # print(layer, x.shape)
             x = layer(x)
 
             if isinstance(layer, ResidualBlock) and layer.num_repeats == 8:
@@ -115,7 +111,6 @@ class Net(nn.Module):
         in_channels = self.in_channels
 
         for module in self.config:
-            # print(module, type(module))
             if isinstance(module, tuple):
                 out_channels, kernel_size, stride = module
                 layers.append(
