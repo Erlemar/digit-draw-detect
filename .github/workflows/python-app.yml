@@ -46,3 +46,7 @@ jobs:
         black --check .
     - name: Run Mypy
       run: mypy  --ignore-missing-imports --warn-no-return --warn-redundant-casts --disallow-incomplete-defs --no-namespace-packages .
+    - name: Push to hub
+      env:
+        HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      run: git push https://Artgor:$HF_TOKEN@huggingface.co/spaces/Artgor/digit-draw-detect main
