@@ -26,8 +26,8 @@ transforms = A.Compose(
 
 
 def cells_to_bboxes(
-    predictions: torch.tensor, tensor_anchors: torch.tensor, s: int, is_preds: bool = True
-) -> torch.tensor:
+    predictions: torch.Tensor, tensor_anchors: torch.Tensor, s: int, is_preds: bool = True
+) -> List[List]:
     """
     Scale the predictions coming from the model_files to
     be relative to the entire image such that they for example later
@@ -106,8 +106,8 @@ def non_max_suppression(
 
 
 def intersection_over_union(
-    boxes_preds: torch.tensor, boxes_labels: torch.tensor, box_format: str = 'midpoint'
-) -> torch.tensor:
+    boxes_preds: torch.Tensor, boxes_labels: torch.Tensor, box_format: str = 'midpoint'
+) -> torch.Tensor:
     """
     Calculate iou.
 
@@ -156,7 +156,7 @@ def intersection_over_union(
 
 
 def predict(
-    model: torch.nn.Module, image: torch.tensor, iou_threshold: float = 1.0, threshold: float = 0.05
+    model: torch.nn.Module, image: torch.Tensor, iou_threshold: float = 1.0, threshold: float = 0.05
 ) -> List[List]:
     """
     Apply the model_files to the predictions and to postprocessing

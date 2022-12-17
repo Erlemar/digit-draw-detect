@@ -5,10 +5,11 @@ import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import numpy as np
 import tomli as tomllib
+import numpy.typing as npt
 
 
 def plot_img_with_rects(
-    img: np.array, boxes: List[List], threshold: float = 0.5, coef: int = 400
+    img: npt.ArrayLike, boxes: List[List], threshold: float = 0.5, coef: int = 400
 ) -> matplotlib.figure.Figure:
     """
     Plot image with rectangles.
