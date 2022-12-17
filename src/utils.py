@@ -3,12 +3,12 @@ from typing import List, Dict
 import matplotlib
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
-import numpy as np
+import numpy.typing as npt
 import tomli as tomllib
 
 
 def plot_img_with_rects(
-    img: np.array, boxes: List[List], threshold: float = 0.5, coef: int = 400
+    img: npt.ArrayLike, boxes: List[List], threshold: float = 0.5, coef: int = 400
 ) -> matplotlib.figure.Figure:
     """
     Plot image with rectangles.
