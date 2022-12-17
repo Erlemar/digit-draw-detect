@@ -45,6 +45,6 @@ jobs:
       run:
         black --check .
     - name: Run Mypy
-      run: mypy  --ignore-missing-imports --warn-no-return --warn-redundant-casts --disallow-incomplete-defs .
+      run: mypy  --ignore-missing-imports --warn-no-return --warn-redundant-casts --disallow-incomplete-defs --no-namespace-packages .
     - name: tests
       run: pytest
