@@ -58,13 +58,6 @@ def save_object_to_s3(filename, s3_filename):
     client.upload_file(filename, 'digitdrawdetect', s3_filename)
 
 
-"""
-* take original image and bboxes
-* upload the image without the boxes and the bboxes to the s3
-* save locally the image with the filtering by threshold
-"""
-
-
 @st.cache(show_spinner=False)
 def save_image(image: npt.ArrayLike, pred: List[List]) -> str:
     """
