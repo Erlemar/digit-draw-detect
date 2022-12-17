@@ -10,7 +10,13 @@ import matplotlib.pyplot as plt
 import numpy.typing as npt
 import streamlit as st
 
-client = boto3.client('s3')
+AWS_ACCESS_KEY_ID = ''
+AWS_SECRET_ACCESS_KEY = ''
+if st.secrets is not None:
+    AWS_ACCESS_KEY_ID = st.secrets['AWS_ACCESS_KEY_ID']
+    AWS_SECRET_ACCESS_KEY = st.secrets['AWS_SECRET_ACCESS_KEY']
+
+client = boto3.client('s3', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
 
 
 def plot_img_with_rects(
