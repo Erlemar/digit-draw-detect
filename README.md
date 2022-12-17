@@ -1,11 +1,12 @@
-# digit-draw-detect
- An app for handwritten digit detection
-
-steps:
-* use git lfs for the model +
-* write better code +
-* convert model to onnx or some other format?. not needed
-* deploy bare working app, without nice things +
-* save images to amazon+
-* make better design
-* think about descriptions on the site
+---
+title: Digit Draw Detect
+emoji: ✍️
+colorFrom: pink
+colorTo: green
+sdk: streamlit
+python_version: 3.10.4
+sdk_version: 1.15.2
+app_file: st_app.py
+pinned: false
+license: mit
+---
