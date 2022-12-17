@@ -6,7 +6,7 @@ from PIL import Image
 from streamlit_drawable_canvas import st_canvas
 
 from src.ml_utils import predict, get_model, transforms
-from src.utils import plot_img_with_rects, get_config
+from src.utils import plot_img_with_rects, save_image
 
 logging.info('Starting')
 
@@ -26,7 +26,6 @@ with col1:
         key='canvas',
     )
 with col2:
-    data = get_config()
     logging.info('canvas ready')
     if canvas_result.image_data is not None:
         # convert a drawn image into numpy array with RGB from a canvas image with RGBA
@@ -37,9 +36,11 @@ with col2:
         logging.info('model ready')
         pred = predict(model, image)
         logging.info('prediction done')
+
+        file_name = save_image(image.permute(1, 2, 0).numpy(), pred)
         threshold = st.slider('Bbox probability slider', min_value=0.0, max_value=1.0, value=0.5)
 
         fig = plot_img_with_rects(image.permute(1, 2, 0).numpy(), pred, threshold, coef=192)
-        fig.savefig('figure_name1.png')
-        image = Image.open('figure_name1.png')
+        fig.savefig(f'{file_name}_temp.png')
+        image = Image.open(f'{file_name}_temp.png')
         st.image(image)
