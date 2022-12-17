@@ -25,14 +25,16 @@ transforms = A.Compose(
 )
 
 
-def cells_to_bboxes(predictions: torch.tensor, anchors: torch.tensor, s: int, is_preds: bool = True) -> torch.tensor:
+def cells_to_bboxes(
+    predictions: torch.tensor, tensor_anchors: torch.tensor, s: int, is_preds: bool = True
+) -> torch.tensor:
     """
     Scale the predictions coming from the model_files to
     be relative to the entire image such that they for example later
     can be plotted or.
     Args:
         predictions: tensor of size (N, 3, S, S, num_classes+5)
-        anchors: the anchors used for the predictions
+        tensor_anchors: the anchors used for the predictions
         s: the number of cells the image is divided in on the width (and height)
         is_preds: whether the input is predictions or the true bounding boxes
     Returns:
@@ -40,12 +42,12 @@ def cells_to_bboxes(predictions: torch.tensor, anchors: torch.tensor, s: int, is
                       object score, bounding box coordinates
     """
     batch_size = predictions.shape[0]
-    num_anchors = len(anchors)
+    num_anchors = len(tensor_anchors)
     box_predictions = predictions[..., 1:5]
     if is_preds:
-        anchors = anchors.reshape(1, len(anchors), 1, 1, 2)
+        tensor_anchors = tensor_anchors.reshape(1, len(tensor_anchors), 1, 1, 2)
         box_predictions[..., 0:2] = torch.sigmoid(box_predictions[..., 0:2])
-        box_predictions[..., 2:] = torch.exp(box_predictions[..., 2:]) * anchors
+        box_predictions[..., 2:] = torch.exp(box_predictions[..., 2:]) * tensor_anchors
         scores = torch.sigmoid(predictions[..., 0:1])
         best_class = torch.argmax(predictions[..., 5:], dim=-1).unsqueeze(-1)
     else:
@@ -78,8 +80,6 @@ def non_max_suppression(
     Returns:
         list: bboxes after performing NMS given a specific IoU threshold
     """
-
-    assert type(bboxes) == list
 
     bboxes = [box for box in bboxes if box[1] > threshold]
     bboxes = sorted(bboxes, key=lambda x: x[1], reverse=True)
@@ -177,6 +177,7 @@ def predict(
     # postprocess. In fact, we could remove indexing with idx here, as there is a single image.
     # But I prefer to keep it so that this code could be easier changed for cases with batch size > 1
     bboxes: List[List] = [[] for _ in range(1)]
+    idx = 0
     for i in range(3):
         S = logits[i].shape[2]
         # it could be better to initialize anchors inside the function, but I don't want to do it for every prediction.

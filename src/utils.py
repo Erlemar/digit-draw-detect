@@ -28,7 +28,7 @@ def plot_img_with_rects(
     ax.imshow(img)
 
     # Create a Rectangle patch
-    for _, rect in enumerate([b for b in boxes if b[1] > threshold]):
+    for _, rect in enumerate(b for b in boxes if b[1] > threshold):
         label, _, xc, yc, w, h = rect
         xc, yc, w, h = xc * coef, yc * coef, w * coef, h * coef
         # the coordinates from center-based to left top corner
