@@ -1,8 +1,0 @@
-# Everything in this section will be available as an environment variable
-db_username = "Jane"
-db_password = "12345qwerty"
-
-AWS_ACCESS_KEY_ID = 'AKIAI4JDKBYRCHGT77VQ'
-AWS_SECRET_ACCESS_KEY = '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'
-S3_BUCKET = 'digitdrawdetect'
-S3_BUCKET_NAME = 'digitdrawdetect'

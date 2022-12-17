@@ -1,10 +1,16 @@
-from typing import List, Dict
+import datetime
+import json
+import uuid
+from typing import List
 
+import boto3
 import matplotlib
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import numpy.typing as npt
-import tomli as tomllib
+import streamlit as st
+
+client = boto3.client('s3')
 
 
 def plot_img_with_rects(
@@ -48,14 +54,42 @@ def plot_img_with_rects(
     return fig
 
 
-def get_config() -> Dict:
+def save_object_to_s3(filename, s3_filename):
+    client.upload_file(filename, 'digitdrawdetect', s3_filename)
+
+
+"""
+* take original image and bboxes
+* upload the image without the boxes and the bboxes to the s3
+* save locally the image with the filtering by threshold
+"""
+
+
+@st.cache(show_spinner=False)
+def save_image(image: npt.ArrayLike, pred: List[List]) -> str:
     """
-    Get dict from config.
+    Save the image and upload the image with bboxes to s3.
+
+    Args:
+        image: np.array with image
+        pred: bboxes
 
     Returns:
-        config
-    """
-    with open('config.toml', 'rb') as f:
-        config = tomllib.load(f)
+        image name
 
-    return config
+    """
+    # create a figure and save it
+    fig, ax = plt.subplots(1, figsize=(4, 4))
+    ax.imshow(image)
+    file_name = str(datetime.datetime.today().date()) + str(uuid.uuid1())
+    fig.savefig(f'{file_name}.png')
+
+    # dump bboxes in a local file
+    with open(f'{file_name}.json', 'w') as f:
+        json.dump({f'{file_name}.png': pred}, f)
+
+    # upload the image and the bboxes to s3.
+    save_object_to_s3(f'{file_name}.png', f'images/{file_name}.png')
+    save_object_to_s3(f'{file_name}.json', f'labels/{file_name}.json')
+
+    return file_name
