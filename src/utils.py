@@ -1,5 +1,6 @@
 import datetime
 import json
+import os
 import uuid
 from typing import List
 
@@ -9,12 +10,22 @@ import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import numpy.typing as npt
 import streamlit as st
+import tomli
 
 AWS_ACCESS_KEY_ID = ''
 AWS_SECRET_ACCESS_KEY = ''
-if st.secrets is not None:
-    AWS_ACCESS_KEY_ID = st.secrets['AWS_ACCESS_KEY_ID']
-    AWS_SECRET_ACCESS_KEY = st.secrets['AWS_SECRET_ACCESS_KEY']
+try:
+    if st.secrets is not None:
+        AWS_ACCESS_KEY_ID = st.secrets['AWS_ACCESS_KEY_ID']
+        AWS_SECRET_ACCESS_KEY = st.secrets['AWS_SECRET_ACCESS_KEY']
+except BaseException:
+    pass
+
+if os.path.exists('config.toml'):
+    with open('config.toml', 'rb') as f:
+        config = tomli.load(f)
+        AWS_ACCESS_KEY_ID = config['AWS_ACCESS_KEY_ID']
+        AWS_SECRET_ACCESS_KEY = config['AWS_SECRET_ACCESS_KEY']
 
 client = boto3.client('s3', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
 
@@ -84,8 +95,8 @@ def save_image(image: npt.ArrayLike, pred: List[List]) -> str:
     fig.savefig(f'{file_name}.png')
 
     # dump bboxes in a local file
-    with open(f'{file_name}.json', 'w') as f:
-        json.dump({f'{file_name}.png': pred}, f)
+    with open(f'{file_name}.json', 'w') as j_f:
+        json.dump({f'{file_name}.png': pred}, j_f)
 
     # upload the image and the bboxes to s3.
     save_object_to_s3(f'{file_name}.png', f'images/{file_name}.png')

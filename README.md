@@ -10,4 +10,4 @@ app_file: st_app.py
 pinned: false
 license: mit
 ---
-Checking readme.
+![visitors](https://visitor-badge.glitch.me/badge?page_id=wissamantoun.arabicnlpapp)
