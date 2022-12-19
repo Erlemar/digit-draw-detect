@@ -8,6 +8,7 @@ from streamlit_drawable_canvas import st_canvas
 from src.ml_utils import predict, get_model, transforms
 from src.utils import plot_img_with_rects, save_image
 
+st.title('Handwritten digit detector')
 logging.info('Starting')
 
 col1, col2 = st.columns(2)
@@ -38,9 +39,19 @@ with col2:
         logging.info('prediction done')
 
         file_name = save_image(image.permute(1, 2, 0).numpy(), pred)
-        threshold = st.slider('Bbox probability slider', min_value=0.0, max_value=1.0, value=0.5)
+        threshold = st.slider('Bbox probability slider', min_value=0.0, max_value=1.0, value=0.8)
 
         fig = plot_img_with_rects(image.permute(1, 2, 0).numpy(), pred, threshold, coef=192)
         fig.savefig(f'{file_name}_temp.png')
         image = Image.open(f'{file_name}_temp.png')
         st.image(image)
+
+text = """
+This is a small app for handwritten digit recognition and recognition developed for fun. It uses a handwritten YOLOv3 model trained from scratch.
+You can draw a digit (or whatever you want) and the model will try to understand what is it.
+You can use the slider above to show bounding boxes with a probability higher than the threshold.
+If you want to know how the app works in more detail, you are welcome to read "About" page.
+Enjoy! :)
+"""
+
+st.markdown(text, unsafe_allow_html=True)

@@ -1,5 +1,6 @@
 import datetime
 import json
+import os
 import uuid
 from typing import List
 
@@ -9,12 +10,22 @@ import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import numpy.typing as npt
 import streamlit as st
+import tomli
 
 AWS_ACCESS_KEY_ID = ''
 AWS_SECRET_ACCESS_KEY = ''
-if st.secrets is not None:
-    AWS_ACCESS_KEY_ID = st.secrets['AWS_ACCESS_KEY_ID']
-    AWS_SECRET_ACCESS_KEY = st.secrets['AWS_SECRET_ACCESS_KEY']
+try:
+    if st.secrets is not None:
+        AWS_ACCESS_KEY_ID = st.secrets['AWS_ACCESS_KEY_ID']
+        AWS_SECRET_ACCESS_KEY = st.secrets['AWS_SECRET_ACCESS_KEY']
+except BaseException:
+    pass
+
+if os.path.exists('config.toml'):
+    with open('config.toml', 'rb') as f:
+        config = tomli.load(f)
+        AWS_ACCESS_KEY_ID = config['AWS_ACCESS_KEY_ID']
+        AWS_SECRET_ACCESS_KEY = config['AWS_SECRET_ACCESS_KEY']
 
 client = boto3.client('s3', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
 
