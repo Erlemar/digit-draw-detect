@@ -95,8 +95,8 @@ def save_image(image: npt.ArrayLike, pred: List[List]) -> str:
     fig.savefig(f'{file_name}.png')
 
     # dump bboxes in a local file
-    with open(f'{file_name}.json', 'w') as f:
-        json.dump({f'{file_name}.png': pred}, f)
+    with open(f'{file_name}.json', 'w') as j_f:
+        json.dump({f'{file_name}.png': pred}, j_f)
 
     # upload the image and the bboxes to s3.
     save_object_to_s3(f'{file_name}.png', f'images/{file_name}.png')
