@@ -58,8 +58,8 @@ def plot_img_with_rects(
         x = xc - w / 2
         y = yc - h / 2
         label = int(label)
-        label = label if label != 10 else 'penis'
-        label = label if label != 11 else 'junk'
+        label = label if label != 10 else 'censored'
+        label = label if label != 11 else 'other'
         rect = [x, y, x + w, y + h]
 
         rect_ = patches.Rectangle(
