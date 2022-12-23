@@ -16,9 +16,9 @@ Initially, I considered deploying the app on Streamlit Cloud, but its computatio
 * [Project page on my personal website](https://andlukyane.com/project/drawn-digits-prediction)
 * [A dataset with the digits and bounding boxes on Kaggle](https://www.kaggle.com/datasets/artgor/handwritten-digits-and-bounding-boxes)
 * [Training code](https://github.com/Erlemar/pytorch_tempest_pet_)
-* Blogpost on my personal website
+* [Blogpost on my personal website](https://andlukyane.com/blog/a-third-life-of-a-personal-project)
 * [Blogpost on medium](https://towardsdatascience.com/the-third-life-of-a-personal-pet-project-for-handwritten-digit-recognition-fd908dc8e7a1)
-* Russian blogpost on habrahabr
+* [Russian blogpost on habr](https://habr.com/ru/company/ods/blog/707046/)
 * [Project code on GitHub](https://github.com/Erlemar/digit-draw-detect)
 """
 
