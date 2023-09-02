@@ -198,7 +198,6 @@ def predict(
 
 @st.cache
 def get_model():
-
     model_name = 'model_files/best_model.pth'
 
     model = Net()
