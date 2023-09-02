@@ -26,7 +26,7 @@ transforms = A.Compose(
 
 
 def cells_to_bboxes(
-        predictions: torch.Tensor, tensor_anchors: torch.Tensor, s: int, is_preds: bool = True
+    predictions: torch.Tensor, tensor_anchors: torch.Tensor, s: int, is_preds: bool = True
 ) -> List[List]:
     """
     Scale the predictions coming from the model_files to
@@ -63,7 +63,7 @@ def cells_to_bboxes(
 
 
 def non_max_suppression(
-        bboxes: List[List], iou_threshold: float, threshold: float, box_format: str = 'corners'
+    bboxes: List[List], iou_threshold: float, threshold: float, box_format: str = 'corners'
 ) -> List[List]:
     """
     Apply nms to the bboxes.
@@ -88,10 +88,17 @@ def non_max_suppression(
     while bboxes:
         chosen_box = bboxes.pop(0)
 
-        bboxes = [box for box in bboxes if
-                  box[0] != chosen_box[0] or intersection_over_union(torch.tensor(chosen_box[2:]),
-                                                                     torch.tensor(box[2:]),
-                                                                     box_format=box_format, ) < iou_threshold]
+        bboxes = [
+            box
+            for box in bboxes
+            if box[0] != chosen_box[0]
+            or intersection_over_union(
+                torch.tensor(chosen_box[2:]),
+                torch.tensor(box[2:]),
+                box_format=box_format,
+            )
+            < iou_threshold
+        ]
 
         bboxes_after_nms.append(chosen_box)
 
@@ -99,7 +106,7 @@ def non_max_suppression(
 
 
 def intersection_over_union(
-        boxes_preds: torch.Tensor, boxes_labels: torch.Tensor, box_format: str = 'midpoint'
+    boxes_preds: torch.Tensor, boxes_labels: torch.Tensor, box_format: str = 'midpoint'
 ) -> torch.Tensor:
     """
     Calculate iou.
@@ -149,7 +156,7 @@ def intersection_over_union(
 
 
 def predict(
-        model: torch.nn.Module, image: torch.Tensor, iou_threshold: float = 1.0, threshold: float = 0.05
+    model: torch.nn.Module, image: torch.Tensor, iou_threshold: float = 1.0, threshold: float = 0.05
 ) -> List[List]:
     """
     Apply the model_files to the predictions and to postprocessing
