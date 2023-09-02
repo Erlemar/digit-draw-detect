@@ -75,7 +75,7 @@ def save_object_to_s3(filename, s3_filename):
     client.upload_file(filename, 'digitdrawdetect', s3_filename)
 
 
-@st.cache(show_spinner=False)
+@st.cache_data(show_spinner=False)
 def save_image(image: npt.ArrayLike, pred: List[List]) -> str:
     """
     Save the image and upload the image with bboxes to s3.
