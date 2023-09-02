@@ -196,7 +196,7 @@ def predict(
     return nms_boxes
 
 
-@st.cache
+@st.cache_data
 def get_model():
     model_name = 'model_files/best_model.pth'
 
