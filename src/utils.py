@@ -27,7 +27,22 @@ if os.path.exists('config.toml'):
         AWS_ACCESS_KEY_ID = config['AWS_ACCESS_KEY_ID']
         AWS_SECRET_ACCESS_KEY = config['AWS_SECRET_ACCESS_KEY']
 
-client = boto3.client('s3', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+# Fall back to the standard AWS environment variables if nothing was found above.
+AWS_ACCESS_KEY_ID = AWS_ACCESS_KEY_ID or os.environ.get('AWS_ACCESS_KEY_ID', '')
+AWS_SECRET_ACCESS_KEY = AWS_SECRET_ACCESS_KEY or os.environ.get('AWS_SECRET_ACCESS_KEY', '')
+
+# Only pass explicit credentials when both are present. Passing empty strings makes boto3
+# send a malformed authorization header (AuthorizationHeaderMalformed: a non-empty Access
+# Key (AKID) must be provided in the credential). When credentials are missing we let boto3
+# resolve them through its default provider chain (env vars, shared config, IAM role, etc.).
+if AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY:
+    client = boto3.client(
+        's3',
+        aws_access_key_id=AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+    )
+else:
+    client = boto3.client('s3')
 
 
 def plot_img_with_rects(
